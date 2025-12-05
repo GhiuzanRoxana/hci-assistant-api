@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using HCI.AIAssistant.API.Models.DTOs.AIAssistantController;
 using HCI.AIAssistant.API.Services;
 using HCI.AIAssistant.API.Models.DTOs;
-using Microsoft.Azure.Devices;
 using Newtonsoft.Json;
+using Microsoft.Azure.Devices;
 using System.Text;
 
 namespace HCI.AIAssistant.API.Controllers;
@@ -19,7 +19,7 @@ public class AIAssistantController : ControllerBase
     private readonly IParametricFunctions _parametricFunctions;
 
     public AIAssistantController(
-         ISecretsService secretsService,
+        ISecretsService secretsService,
         IAppConfigurationsService appConfigurationsService,
         IAIAssistantService aIAssistantService,
         IParametricFunctions parametricFunctions
@@ -48,8 +48,9 @@ public class AIAssistantController : ControllerBase
             );
         }
 
+        string messageToSendToAssistant = "Instruction: " + _appConfigurationsService.Instruction + "\nMessage: " + request.TextMessage;
 #pragma warning disable CS8604
-        string textMessageResponse = await _aIAssistantService.SendMessageAndGetResponseAsync(request.TextMessage);
+        string textMessageResponse = await _aIAssistantService.SendMessageAndGetResponseAsync(messageToSendToAssistant);
 #pragma warning restore CS8604
 
         AIAssistantControllerPostMessageResponseDTO response = new()
